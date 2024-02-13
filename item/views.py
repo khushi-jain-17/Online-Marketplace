@@ -1,5 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect,get_object_or_404
+from .models import Category,Item
+from django.contrib.auth.decorators import login_required 
+
+
 
 def items(request):
     pass
+
+def detail(request,pk):
+    item=get_object_or_404(Item,pk=pk)
+    related_items=Item.objects.filter(category=item.category,is_sold=False).exclude(pk=pk)[0:3]
+    return render(request,'item/detail.html',{'item':item})
+
 
