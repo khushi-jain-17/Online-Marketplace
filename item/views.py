@@ -1,8 +1,21 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import Category,Item
 from django.contrib.auth.decorators import login_required 
+from django.db.models import Q
+from .forms import NewItemForm,EditItemForm 
 
-
+@login_required
+def new(request):
+    if request.method=='POST':
+        form=NewItemForm(request.POST,request.FILES)
+        if form.is_valid():
+            item=form.save(commit=False)
+            item.created_by=request.user
+            item.save()
+            return redirect('item.detail',pk=item.id)
+    else:
+        form=NewItemForm()
+    return render(request,'item/form.html',{'form':form,'title':'New Item',})
 
 def items(request):
     pass

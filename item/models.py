@@ -1,16 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Category(models.Model):
-    name=models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
 
     class Meta:
-        ordering=('name',)
+        ordering = ('name',)
         verbose_name_plural = 'Categories'
 
-        def __str__(self):
-            return self.name 
-        
+    def __str__(self):
+        return self.name
+    
+
 class Item(models.Model):
     category=models.ForeignKey(Category,related_name='items',on_delete=models.CASCADE)
     name=models.CharField(max_length=255)
